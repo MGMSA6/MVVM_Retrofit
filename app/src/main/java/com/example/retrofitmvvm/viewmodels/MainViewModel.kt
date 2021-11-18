@@ -8,14 +8,14 @@ import com.example.retrofitmvvm.repository.QuoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val quoteRepository: QuoteRepository) : ViewModel() {
+class MainViewModel(private val repository: QuoteRepository) : ViewModel() {
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            quoteRepository.getQuotes(1)
+        viewModelScope.launch(Dispatchers.IO){
+            repository.getQuotes(1)
         }
     }
 
-    val quotes: LiveData<QuoteList>
-    get() = quoteRepository.quotes
+    val quotes : LiveData<QuoteList>
+        get() = repository.quotes
 }
