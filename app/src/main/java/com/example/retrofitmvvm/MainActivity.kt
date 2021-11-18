@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         val repository = (application as QuoteApplication).quoteRepository
 
-        mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository)).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
 
         mainViewModel.quotes.observe(this, Observer {
             Toast.makeText(this@MainActivity, it.results.size.toString(), Toast.LENGTH_SHORT).show()
