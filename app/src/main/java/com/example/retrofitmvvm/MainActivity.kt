@@ -1,11 +1,11 @@
 package com.example.retrofitmvvm
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.retrofitmvvm.repository.Response
 import com.example.retrofitmvvm.viewmodels.MainViewModel
 import com.example.retrofitmvvm.viewmodels.MainViewModelFactory
 
@@ -22,7 +22,33 @@ class MainActivity : AppCompatActivity() {
         mainViewModel = ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
 
         mainViewModel.quotes.observe(this, Observer {
-            Toast.makeText(this@MainActivity, it.results.size.toString(), Toast.LENGTH_SHORT).show()
+            when (it) {
+                is Response.Loading -> {
+                    Toast.makeText(
+                        this@MainActivity,
+                       "Loading",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                is Response.Success -> {
+                    it.data?.let {
+                        Toast.makeText(
+                            this@MainActivity,
+                            it.results.size.toString(),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                is Response.Error -> {
+                    it.errorMessage
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Some error occured",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+            }
         })
     }
 }
